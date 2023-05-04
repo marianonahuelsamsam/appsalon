@@ -1,0 +1,17 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.seccion {
+    display: none;
+
+    .text-center {
+        text-align: center;
+    }
+}
+
+.ocultar {
+    display: none;
+}
+.mostrar {
+    display: block;
+}
