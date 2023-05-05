@@ -1,1 +1,117 @@
-let paso=1;const pasoInicial=1,pasoFinal=3;function iniciarApp(){tabs(),mostrarSeccion(),botonesPaginacion(),paginaAnterior(),paginaSiguiente()}function mostrarSeccion(){const o=document.querySelector(".mostrar");o&&o.classList.remove("mostrar");const t="#paso-"+paso;document.querySelector(t).classList.add("mostrar");const a=document.querySelector(".actual");a&&a.classList.remove("actual");document.querySelector(`[data-paso="${paso}"]`).classList.add("actual")}function tabs(){document.querySelectorAll(".tabs button").forEach(o=>{o.addEventListener("click",(function(o){paso=parseInt(o.target.dataset.paso),mostrarSeccion(),botonesPaginacion()}))})}function botonesPaginacion(){const o=document.querySelector("#anterior"),t=document.querySelector("#siguiente");1===paso&&(o.classList.add("ocultar"),t.classList.remove("ocultar")),3===paso&&(t.classList.add("ocultar"),o.classList.remove("ocultar")),2===paso&&(t.classList.remove("ocultar"),o.classList.remove("ocultar")),mostrarSeccion()}function paginaAnterior(){(paginaAnterior=document.querySelector("#anterior")).addEventListener("click",(function(){paso<=1||(paso--,botonesPaginacion())}))}function paginaSiguiente(){(paginaSiguiente=document.querySelector("#siguiente")).addEventListener("click",(function(){paso>=3||(paso++,botonesPaginacion())}))}document.addEventListener("DOMContentLoaded",(function(){iniciarApp()}));
+let paso = 1;
+const pasoInicial = 1;
+const pasoFinal = 3;
+
+document.addEventListener("DOMContentLoaded", function() {
+    iniciarApp();
+})
+
+function iniciarApp() {
+    tabs(); // Cambia la sección cuando se presionen los tabs (/citas).
+    mostrarSeccion(); // Es mandada a llamar por la función "tabs".
+    botonesPaginacion();
+    paginaAnterior();
+    paginaSiguiente();
+    consultarApi(); // Consultar a la base de datos conectando con el back-end (PHP).
+}
+
+function mostrarSeccion() {
+    // Primero eliminamos la sección actual
+    const seccionAnterior = document.querySelector(".mostrar");
+    /* Para no recibir errores en consola, mos aseguramos que la app no intente eliminar la sección si todavía no
+    contiene la clase "mostrar"*/
+    if (seccionAnterior){
+        seccionAnterior.classList.remove("mostrar");
+    } 
+    /* Seleccionamos la sección actual a través de su id ("paso-1"/"paso-2"/"paso-3"). Para especificar el paso
+    nos ayudamos de la variabe que definimos al principio del código ("paso").*/
+    const pasoSelector = `#paso-${paso}`;
+    // Le agregamos la clase mostrar a la sección actual
+    const seccion = document.querySelector(pasoSelector);
+    seccion.classList.add("mostrar");
+
+    // RESALTAR EL TAB ACTUAL
+    // Buscamos el tab que tenga la clase "actual" y si existe lo eliminamos.
+    const tabAnterior = document.querySelector(".actual");
+    if(tabAnterior) {
+        tabAnterior.classList.remove("actual");
+    }
+
+    const tabActual = document.querySelector(`[data-paso="${paso}"]`);
+    tabActual.classList.add("actual");
+    
+} 
+
+function tabs() {
+    const botones = document.querySelectorAll('.tabs button')
+
+    botones.forEach(boton => {
+        boton.addEventListener("click", function(e) {
+            paso = parseInt(e.target.dataset.paso);
+             
+            mostrarSeccion();
+            botonesPaginacion();
+        })
+    })
+}
+
+function botonesPaginacion () {
+    const paginaAnterior = document.querySelector("#anterior");
+    const paginaSiguiente = document.querySelector("#siguiente");
+
+    if (paso === 1) {
+        paginaAnterior.classList.add("ocultar");
+        paginaSiguiente.classList.remove("ocultar");
+    }
+    if (paso === 3) {
+        paginaSiguiente.classList.add("ocultar");
+        paginaAnterior.classList.remove("ocultar");
+    }
+    if (paso === 2) {
+        paginaSiguiente.classList.remove("ocultar");
+        paginaAnterior.classList.remove("ocultar");
+    }
+
+    mostrarSeccion();
+}
+
+function paginaAnterior() {
+    paginaAnterior = document.querySelector("#anterior");
+
+    paginaAnterior.addEventListener("click", function() {
+        if (paso <= pasoInicial) return;
+        paso--;
+
+        botonesPaginacion();
+    })
+}
+
+function paginaSiguiente() {
+    paginaSiguiente = document.querySelector("#siguiente");
+
+    paginaSiguiente.addEventListener("click", function() {
+        if (paso >= pasoFinal) return;
+        paso++;
+
+        botonesPaginacion();
+    })
+}
+
+async function consultarApi() {
+
+    try {
+        const url = "http://localhost:3000/api/servicios";
+        const resultado = await fetch(url);
+        const servicios = await resultado.json();
+        mostrarServicios(servicios);
+    } catch (error) {
+        
+    }
+    
+}
+
+function() {
+    mostrarServicios(servicios){
+        
+    }
+}

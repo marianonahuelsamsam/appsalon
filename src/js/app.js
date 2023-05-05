@@ -12,6 +12,7 @@ function iniciarApp() {
     botonesPaginacion();
     paginaAnterior();
     paginaSiguiente();
+    consultarApi(); // Consultar a la base de datos conectando con el back-end (PHP).
 }
 
 function mostrarSeccion() {
@@ -94,4 +95,23 @@ function paginaSiguiente() {
 
         botonesPaginacion();
     })
+}
+
+async function consultarApi() {
+
+    try {
+        const url = "http://localhost:3000/api/servicios";
+        const resultado = await fetch(url);
+        const servicios = await resultado.json();
+        mostrarServicios(servicios);
+    } catch (error) {
+        
+    }
+    
+}
+
+function() {
+    mostrarServicios(servicios){
+        
+    }
 }
