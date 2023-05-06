@@ -109,9 +109,31 @@ async function consultarApi() {
     }
     
 }
+// Mandada a llamar por "consultarApi()". Recibimos el listado de servicios a través de la api.
+function mostrarServicios(servicios) {
 
-function() {
-    mostrarServicios(servicios){
-        
-    }
+    servicios.forEach( servicio => {
+
+        const {id, nombre, precio} = servicio;
+        // Creamos el párrafo para el nombre del servicio.
+        const nombreServicio = document.createElement("P");
+        nombreServicio.classList.add("nombre-servicio");
+        nombreServicio.textContent = nombre;
+
+        // Creamos el párrafo para el precio del servicio.
+        const precioServicio = document.createElement("P");
+        precioServicio.classList.add("precio-servicio");
+        precioServicio.textContent = precio;
+
+        // Creamos el div para el precio y nombre del servicio
+        const divServicio = document.createElement("DIV");
+        divServicio.classList.add("servicio");
+        divServicio.appendChild(nombreServicio);
+        divServicio.appendChild(precioServicio);
+
+        // Conectamos el Div creado mediante JS con la sección que definimos con el id "servicios" en "views/cita/index.php".
+        document.querySelector("#servicios").appendChild(divServicio);
+
+    })
+
 }
