@@ -2,6 +2,13 @@ let paso = 1;
 const pasoInicial = 1;
 const pasoFinal = 3;
 
+const cita = {
+   nombre: "",
+   fecha: "",
+   hora: "",
+   servicios: []
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     iniciarApp();
 })
@@ -128,12 +135,40 @@ function mostrarServicios(servicios) {
         // Creamos el div para el precio y nombre del servicio
         const divServicio = document.createElement("DIV");
         divServicio.classList.add("servicio");
+        divServicio.dataset.idServicio = id;
+
         divServicio.appendChild(nombreServicio);
         divServicio.appendChild(precioServicio);
+        divServicio.onclick = function() {
+            seleccionarServicio(servicio);
+        }
 
         // Conectamos el Div creado mediante JS con la sección que definimos con el id "servicios" en "views/cita/index.php".
         document.querySelector("#servicios").appendChild(divServicio);
 
     })
 
+}
+
+function seleccionarServicio(servicio) {
+    const {servicios} = cita; // Extraemos el arreglo del objeto de Citas.
+    const {id} = servicio; // Extraemos el id de el objeto servicio que nos retornó la función mostrarServicios().
+
+    // Identificar el servicio al que se le da click.
+    const divServicio = document.querySelector(`[data-id-servicio="${id}"]`);
+
+    // Comparamos si el servicio al que se le dio click ya está almacenado en el objeto "citas".
+    if(servicios.some( agregado => agregado.id === id)) {
+        // Deseleccionar
+        // Creamos un nuevo arreglo unicamente con los servicios cuyo id sea distinto al almacenado en el objeto.
+        cita.servicios = servicios.filter(agregado => agregado.id !== id);
+        // Quitamos el estilo de selección
+        divServicio.classList.remove("seleccionado");
+    } else {
+        // Seleccionar
+        // Sincronizamos lo guardado en el objeto "citas" con el servico clickeado. 
+        cita.servicios = [...servicios, servicio];
+        // Agregamos el estilo de selección
+        divServicio.classList.add("seleccionado");
+    }
 }
