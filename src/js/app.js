@@ -2,6 +2,7 @@ let paso = 1;
 const pasoInicial = 1;
 const pasoFinal = 3;
 
+// Objeto de citas que se irá llenando con el nombre del usuario, la fecha y hora que elija y los servicios que seleccione.
 const cita = {
    nombre: "",
    fecha: "",
@@ -14,25 +15,35 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 function iniciarApp() {
+    // Paginador
     tabs(); // Cambia la sección cuando se presionen los tabs (/citas).
     mostrarSeccion(); // Es mandada a llamar por la función "tabs".
     botonesPaginacion();
     paginaAnterior();
     paginaSiguiente();
+
     consultarApi(); // Consultar a la base de datos conectando con el back-end (PHP).
+
+    nombreCLiente(); // Guardar el nombre del usuario en el objeto de citas.
+    seleccionarFecha(); // Guardar la fecha que el usuario elija en el objeto de citas
+    seleccionarHora(); // Guardar la hora que el usuario elija en el objeto de citas.
 }
 
+// Paginar las secciones.
 function mostrarSeccion() {
     // Primero eliminamos la sección actual
     const seccionAnterior = document.querySelector(".mostrar");
-    /* Para no recibir errores en consola, mos aseguramos que la app no intente eliminar la sección si todavía no
+
+    /* Para no recibir errores en consola, nos aseguramos que la app no intente eliminar la sección si todavía no
     contiene la clase "mostrar"*/
     if (seccionAnterior){
         seccionAnterior.classList.remove("mostrar");
     } 
+
     /* Seleccionamos la sección actual a través de su id ("paso-1"/"paso-2"/"paso-3"). Para especificar el paso
     nos ayudamos de la variabe que definimos al principio del código ("paso").*/
     const pasoSelector = `#paso-${paso}`;
+
     // Le agregamos la clase mostrar a la sección actual
     const seccion = document.querySelector(pasoSelector);
     seccion.classList.add("mostrar");
@@ -43,21 +54,21 @@ function mostrarSeccion() {
     if(tabAnterior) {
         tabAnterior.classList.remove("actual");
     }
-
     const tabActual = document.querySelector(`[data-paso="${paso}"]`);
     tabActual.classList.add("actual");
-    
 } 
 
 function tabs() {
+    // Seleccionamos todos los botones.
     const botones = document.querySelectorAll('.tabs button')
 
+    // Iteramos sobre los botones
     botones.forEach(boton => {
         boton.addEventListener("click", function(e) {
-            paso = parseInt(e.target.dataset.paso);
+            paso = parseInt(e.target.dataset.paso); // Reasignamos la variable con el paso actual.
              
-            mostrarSeccion();
-            botonesPaginacion();
+            mostrarSeccion(); // Mostrar las secciones según el tab.
+            botonesPaginacion(); //COnfiguración de los botones del paginador.
         })
     })
 }
@@ -81,7 +92,6 @@ function botonesPaginacion () {
 
     mostrarSeccion();
 }
-
 function paginaAnterior() {
     paginaAnterior = document.querySelector("#anterior");
 
@@ -92,7 +102,6 @@ function paginaAnterior() {
         botonesPaginacion();
     })
 }
-
 function paginaSiguiente() {
     paginaSiguiente = document.querySelector("#siguiente");
 
@@ -171,4 +180,56 @@ function seleccionarServicio(servicio) {
         // Agregamos el estilo de selección
         divServicio.classList.add("seleccionado");
     }
+}
+
+function nombreCLiente() {
+    cita.nombre = document.querySelector("#nombre").value;
+}
+
+function seleccionarFecha() {
+    const inputFecha = document.querySelector("#fecha");
+
+    inputFecha.addEventListener("input", function(e) {
+        const dia = new Date(e.target.value).getUTCDay();
+
+        if (dia === 0 || dia === 6) {
+            e.target.value = "";
+            mostrarAlerta("Sábados y Domingos no disponibles", "error");
+        } else {
+            cita.fecha = e.target.value;
+        }
+    })
+}
+
+function seleccionarHora() {
+    const inputHora = document.querySelector("#hora");
+    inputHora.addEventListener("input", function(e) {
+        const horaCita = e.target.value;
+        const hora = horaCita.split(":")[0];
+
+        if (hora < 10 || hora > 18) {
+            e.target.value = "";
+            mostrarAlerta("Horario no disponible", "error");
+        } else {
+            cita.hora = e.target.value;
+            console.log(cita);
+        }
+    });
+}
+
+function mostrarAlerta(mensaje, tipo) {
+    const alertaPrevia = document.querySelector(".alerta");
+    if (alertaPrevia) return;
+
+    const alerta = document.createElement("DIV");
+    alerta.textContent = mensaje;
+    alerta.classList.add("alerta");
+    alerta.classList.add(tipo);
+
+    const formulario = document.querySelector(".formulario");
+    formulario.appendChild(alerta);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
 }
