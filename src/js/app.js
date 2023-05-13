@@ -27,6 +27,8 @@ function iniciarApp() {
     nombreCLiente(); // Guardar el nombre del usuario en el objeto de citas.
     seleccionarFecha(); // Guardar la fecha que el usuario elija en el objeto de citas
     seleccionarHora(); // Guardar la hora que el usuario elija en el objeto de citas.
+
+    mostrarResumen(); // MOstrar el resumen de la cita.
 }
 
 // Paginar las secciones.
@@ -84,6 +86,8 @@ function botonesPaginacion () {
     if (paso === 3) {
         paginaSiguiente.classList.add("ocultar");
         paginaAnterior.classList.remove("ocultar");
+
+        mostrarResumen();
     }
     if (paso === 2) {
         paginaSiguiente.classList.remove("ocultar");
@@ -194,7 +198,7 @@ function seleccionarFecha() {
 
         if (dia === 0 || dia === 6) {
             e.target.value = "";
-            mostrarAlerta("Sábados y Domingos no disponibles", "error");
+            mostrarAlerta("Sábados y Domingos no disponibles", "error", ".formulario");
         } else {
             cita.fecha = e.target.value;
         }
@@ -209,27 +213,84 @@ function seleccionarHora() {
 
         if (hora < 10 || hora > 18) {
             e.target.value = "";
-            mostrarAlerta("Horario no disponible", "error");
+            mostrarAlerta("Horario no disponible", "error", ".formulario");
         } else {
             cita.hora = e.target.value;
-            console.log(cita);
         }
     });
 }
 
-function mostrarAlerta(mensaje, tipo) {
+function mostrarResumen() {
+    // Seleccionamos el div principal de la sección "resumen".
+    const resumen = document.querySelector(".cita-resumen");
+
+    /* Eliminamos el contenido previo (para quitar el alerta en caso de anteriormente haber ingresado a la sección sin 
+    ingresar fecha ni hora)*/
+    while(resumen.firstChild) {
+        resumen.removeChild(resumen.firstChild);
+    }
+
+    // Mostrar el alerta en caso de que no exista fecha ni hora y detener el código.
+    if (Object.values(cita).includes("") || cita.servicios.length === 0) {
+        mostrarAlerta("Faltan datos o Servicios", "error", ".cita-resumen", false);
+
+        return;
+    } 
+
+    // Destructuring al objeto de cita con la informaión completa ya disponible.
+    const { nombre, fecha, hora, servicios} = cita;
+
+    // Insertar nombre del cliente, fecha y hora de la cita.
+    const nombreCita = document.createElement("P")
+    nombreCita.innerHTML = `<span>Nombre:</span> ${nombre}`;
+    const fechaCita = document.createElement("P");
+    fechaCita.innerHTML = `<span>Fecha:</span> ${fecha}`;
+    const horaCita = document.createElement("P");
+    horaCita.innerHTML = `<span>Hora:</span> ${hora}`;
+    resumen.appendChild(nombreCita);
+    resumen.appendChild(fechaCita);
+    resumen.appendChild(horaCita);
+
+    // Iteramos el arreglo con los servicios y lo insertamos en la página.
+    servicios.forEach(servicio=> {
+        const {id, nombre, precio} = servicio;
+        // Div contenedor del servicio.
+        const servicioContenedor = document.createElement("DIV");
+        servicioContenedor.classList.add("servicio-contenedor");
+
+        // Nombre y precio del servicio
+        const textoServicio = document.createElement("P");
+        textoServicio.innerHTML = `<span>Nombre:</span>: ${nombre}`;
+        const precioServicio = document.createElement("P");
+        precioServicio.innerHTML = `<span>Precio</span>: ${precio}`;
+
+        // Armamos el div con la información del servicio insertando nombre y precio en servicioContenedor
+        servicioContenedor.appendChild(textoServicio);
+        servicioContenedor.appendChild(precioServicio);
+        // Lo insertamos en la página de resumen
+        resumen.appendChild(servicioContenedor);
+    })
+
+}
+
+function mostrarAlerta(mensaje, tipo, elemento, desaparece = true) {
     const alertaPrevia = document.querySelector(".alerta");
-    if (alertaPrevia) return;
+    if (alertaPrevia) {
+        alertaPrevia.remove();
+    };
 
     const alerta = document.createElement("DIV");
     alerta.textContent = mensaje;
     alerta.classList.add("alerta");
     alerta.classList.add(tipo);
 
-    const formulario = document.querySelector(".formulario");
-    formulario.appendChild(alerta);
+    const referencia = document.querySelector(elemento);
+    referencia.appendChild(alerta);
 
-    setTimeout(() => {
-        alerta.remove();
-    }, 3000);
+    if (desaparece === true) {
+        setTimeout(() => {
+            alerta.remove();
+        }, 3000);
+    }
 }
+
