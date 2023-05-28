@@ -25,3 +25,19 @@
         padding: 3rem 0;
     }
 }
+
+.barra {   
+    text-align: center;
+    border-bottom: 1px solid v.$gris;
+    @include m.tablet {
+        border: none;
+        height: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .boton {
+        @include m.boton(v.$negro, v.$blanco);
+    }
+}
