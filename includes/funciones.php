@@ -12,3 +12,11 @@ function s($html) : string {
     $s = htmlspecialchars($html);
     return $s;
 }
+
+// Proteger las rutas privadas de usuarios no autenticados.
+
+function isAuth() {
+    if (!isset($_SESSION["login"])) {
+        header("location: /");
+    }
+}
