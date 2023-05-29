@@ -5,6 +5,7 @@ require_once __DIR__ . '/../includes/app.php';
 use MVC\Router;
 use Controller\APIController;
 use Controller\CitaController;
+use Controller\AdminController;
 use Controller\LoginController;
 
 $router = new Router();
@@ -31,6 +32,7 @@ $router->get("/confirmar-cuenta", [LoginController::class, "confirmar"]);
 
 // Zona privada
 $router->get("/cita", [CitaController::class, "index"]);
+$router->get("/admin", [AdminController::class, "index"]);
 
 // API Servicios
 $router->get("/api/servicios", [APIController::class, "index"]);
