@@ -1,6 +1,6 @@
 <?php 
 
-namespace Controller;
+namespace Model;
 
 use Model\ActiveRecord;
 
@@ -21,13 +21,13 @@ class AdminCita extends ActiveRecord {
 
     public function __construct($args = [])
     {
-        $this->id = $args["id"];
-        $this->hora = $args["hora"];
-        $this->cliente = $args["cliente"];
-        $this->email = $args["email"];
-        $this->telefono = $args["telefono"];
-        $this->servicio = $args["servicio"];
-        $this->precio = $args["precio"];
+        $this->id = $args["id"] ?? null;
+        $this->hora = $args["hora"] ?? "";
+        $this->cliente = $args["cliente"] ?? "";
+        $this->email = $args["email"] ?? "";
+        $this->telefono = $args["telefono"] ?? "";
+        $this->servicio = $args["servicio"] ?? "";
+        $this->precio = $args["precio"] ?? "";
     }
     
 }
