@@ -15,4 +15,27 @@
     </form>
 </div>
 
-<div id="citas-admin"></div>
+<div id="citas-admin">
+
+    <ul class="citas">
+        <?php $idAnterior = 0; ?>
+        <?php foreach ($citas as $cita) :?>
+            <?php if($idAnterior !== $cita->id) :?>
+                <li>
+                    <p> Id: <span><?php echo $cita->id ?></span> </p> 
+                    <p> Hora: <span><?php echo $cita->hora ?></span> </p> 
+                    <p> Cliente: <span><?php echo $cita->cliente ?></span> </p> 
+                    <p> Email: <span><?php echo $cita->email ?></span> </p> 
+                    <p> Teléfono: <span><?php echo $cita->telefono ?></span> </p> 
+                    
+                </li>
+                
+
+                <h3>Servicios</h3>
+            <?php $idAnterior = $cita->id; endif?>
+
+                <p class=""> <?php echo $cita->servicio . " " . $cita->precio;?> </p>
+        <?php endforeach; ?>
+    </ul>
+
+</div>
