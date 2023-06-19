@@ -15,8 +15,17 @@ function s($html) : string {
 
 // Proteger las rutas privadas de usuarios no autenticados.
 
-function isAuth() {
+function isAuth() : void {
     if (!isset($_SESSION["login"])) {
         header("location: /");
     }
+}
+
+// Función creada para la vista de Admin. Compara dos id.
+function esUltimo($registroActual, $registroSiguiente) {
+    if($registroActual !== $registroSiguiente) {
+        return true;
+    }
+
+    return false;
 }
