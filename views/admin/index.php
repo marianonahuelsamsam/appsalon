@@ -73,6 +73,12 @@
 
                 if(esUltimo($registroActual, $registroSiguiente)) : ?>
                     <p class="total"> Total: <span><?php echo "$" . $precioTotal; ?></span> </p>
+
+                    <form action="/api/eliminar" method="POST">
+                        <input type="hidden" name="id" value="<?php echo $cita->id ?>">
+
+                        <input type="submit" class="boton-eliminar" value="Eliminar">
+                    </form>
                 <?php endif; ?>
         <?php endforeach; // Fin de Foreach?>
     </ul>
