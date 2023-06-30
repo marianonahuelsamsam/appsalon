@@ -21,6 +21,12 @@ function isAuth() : void {
     }
 }
 
+function isAdmin() : void {
+    if(!isset($_SESSION["admin"])) {
+        header("location: /");
+    }
+}
+
 // Función creada para la vista de Admin. Compara dos id.
 function esUltimo($registroActual, $registroSiguiente) {
     if($registroActual !== $registroSiguiente) {
