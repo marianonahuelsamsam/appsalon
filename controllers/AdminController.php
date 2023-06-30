@@ -8,6 +8,8 @@ use Model\AdminCita;
 
 class AdminController {
     public static function index(Router $router) {
+        isAdmin();
+
         /* Se realiza esta comprobación para evitar mostrar información de errores en caso de que el usuario 
         modifique el query string en la barra de direcciones.
         El If comprueba que esté definido $_GET["fecha] y que la fecha contenida tenga una extensión de 10. */
