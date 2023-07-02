@@ -19,3 +19,21 @@
         color: v.$blanco;
     }
 }
+
+.lista-servicios {
+    @extend .citas;
+
+    .acciones {
+        margin: 2rem 0 2rem 0;
+    }
+
+    .boton, .boton-eliminar {
+        margin: 0;
+    }
+
+    @media (max-width: 480px) {
+        .boton {
+            margin-bottom: 1rem;
+        }
+    }
+}
