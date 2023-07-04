@@ -122,7 +122,7 @@ function paginaSiguiente() {
 async function consultarApi() {
 
     try {
-        const url = "http://localhost:3000/api/servicios";
+        const url = "/api/servicios";
         const resultado = await fetch(url);
         const servicios = await resultado.json();
         mostrarServicios(servicios);
@@ -312,7 +312,7 @@ async function reservarCita() {
     
     try {
         // Peticion
-        const url = "http://localhost:3000/api/cita";
+        const url = "/api/cita";
 
         const respuesta = await fetch(url, {
             method: "POST",
