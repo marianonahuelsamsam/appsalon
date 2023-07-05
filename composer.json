@@ -2,7 +2,10 @@
     "name": "maria/app-salon_php_mvc_js_sass",
     "autoload": {
         "psr-4": {
-            "Maria\\AppSalonPhpMvcJsSass\\": "src/"
+            "MVC\\": "./",
+            "Model\\": "./models",
+            "Controller\\": "./controllers",
+            "Classes\\" : "./classes"
         }
     },
     "authors": [
