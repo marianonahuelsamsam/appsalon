@@ -2,19 +2,29 @@
 @use 'base/mixins' as m;
 
 .formulario {
-    margin-top: 5rem;
-    width: 100%;
+    margin: 5rem auto 0 auto;
+    width: 95%;
 }
 
 .campo {
     margin-bottom: 2rem;
     gap: 1rem;
     display: flex;
-    align-items: center;
-
+    flex-direction: column;
+    
     label {
-        flex: 0 0 10rem;
+        flex: 0 0 1rem;
     }
+    
+    @include m.tablet {
+        flex-direction: row;
+        align-items: center;
+
+        label {
+            flex: 0 0 10rem;
+        }
+    }
+
 
     input {
         flex: 1;
